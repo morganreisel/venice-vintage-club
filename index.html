@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venice Vintage Club</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --purple: #5B2EE5;
+            --orange: #F07A1A;
+            --cream: #F5F0E8;
+            --dark: #1a1a1a;
+            --grain-opacity: 0.04;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: var(--cream);
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        /* Film grain overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+            opacity: var(--grain-opacity);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(26, 26, 26, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(245, 240, 232, 0.08);
+        }
+
+        nav .logo-text {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.1rem;
+            color: var(--orange);
+            letter-spacing: 0.5px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 32px;
+        }
+
+        nav ul li a {
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        nav ul li a:hover {
+            opacity: 1;
+            color: var(--orange);
+        }
+
+        /* Hero */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/hero.jpg') center/cover no-repeat;
+            filter: brightness(0.35) contrast(1.1) saturate(0.8);
+            transform: scale(1.05);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .globe-container {
+            width: 220px;
+            height: 220px;
+            margin-bottom: 40px;
+            animation: spin 20s linear infinite;
+        }
+
+        .globe-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @keyframes spin {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+
+        .hero h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 400;
+            color: var(--cream);
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .hero .tagline {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-style: italic;
+            color: var(--orange);
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+
+        .hero .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.4;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+            50% { opacity: 0.7; transform: translateX(-50%) translateY(5px); }
+        }
+
+        /* Section styles */
+        section {
+            padding: 100px 40px;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 400;
+            margin-bottom: 24px;
+            line-height: 1.15;
+        }
+
+        /* Shop */
+        .shop {
+            background: var(--dark);
+        }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .shop-item {
+            background: rgba(245, 240, 232, 0.04);
+            border: 1px solid rgba(245, 240, 232, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s;
+            cursor: pointer;
+        }
+
+        .shop-item:hover {
+            transform: translateY(-4px);
+            border-color: var(--orange);
+        }
+
+        .shop-item .item-image {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: rgba(245, 240, 232, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(245, 240, 232, 0.2);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .shop-item .item-info {
+            padding: 16px;
+        }
+
+        .shop-item .item-info h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 6px;
+        }
+
+        .shop-item .item-info .price {
+            color: var(--orange);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .shop-item .item-info .details {
+            font-size: 0.75rem;
+            opacity: 0.5;
+            margin-top: 4px;
+        }
+
+        .shop-item .item-info .tags {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .shop-item .item-info .tag {
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border: 1px solid rgba(245, 240, 232, 0.15);
+            border-radius: 2px;
+            opacity: 0.6;
+        }
+
+        .fulfillment-note {
+            margin-top: 32px;
+            padding: 20px 24px;
+            background: rgba(91, 46, 229, 0.08);
+            border-left: 3px solid var(--purple);
+            border-radius: 0 4px 4px 0;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+
+        /* Lookbook / Gallery */
+        .lookbook {
+            background: rgba(245, 240, 232, 0.02);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            margin-top: 48px;
+        }
+
+        .gallery-grid .gallery-item {
+            aspect-ratio: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-grid .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: contrast(1.05) saturate(0.9);
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-grid .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-grid .gallery-item.tall {
+            grid-row: span 2;
+        }
+
+        .gallery-grid .gallery-item.wide {
+            grid-column: span 2;
+        }
+
+        /* About */
+        .about {
+            background: var(--dark);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-top: 48px;
+        }
+
+        .about-text p {
+            font-size: 1rem;
+            line-height: 1.8;
+            opacity: 0.75;
+            margin-bottom: 20px;
+        }
+
+        .about-image {
+            aspect-ratio: 4/5;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: contrast(1.05) saturate(0.85);
+        }
+
+        /* Events */
+        .events {
+            background: rgba(91, 46, 229, 0.06);
+        }
+
+        .event-card {
+            border: 1px solid rgba(245, 240, 232, 0.1);
+            border-radius: 4px;
+            padding: 32px;
+            margin-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: border-color 0.3s;
+        }
+
+        .event-card:hover {
+            border-color: var(--orange);
+        }
+
+        .event-date {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.5rem;
+            color: var(--orange);
+            line-height: 1;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .event-date span {
+            display: block;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--cream);
+            opacity: 0.5;
+            margin-top: 4px;
+        }
+
+        .event-details {
+            flex: 1;
+            padding: 0 32px;
+        }
+
+        .event-details h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.4rem;
+            font-weight: 400;
+            margin-bottom: 6px;
+        }
+
+        .event-details p {
+            font-size: 0.85rem;
+            opacity: 0.6;
+            line-height: 1.5;
+        }
+
+        .event-rsvp {
+            padding: 10px 24px;
+            background: var(--orange);
+            color: var(--dark);
+            border: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: background 0.3s;
+        }
+
+        .event-rsvp:hover {
+            background: var(--cream);
+        }
+
+        /* Mailing list */
+        .mailing-list {
+            background: var(--purple);
+            text-align: center;
+            padding: 80px 40px;
+        }
+
+        .mailing-list .section-label {
+            color: var(--orange);
+        }
+
+        .mailing-list .section-title {
+            color: var(--cream);
+        }
+
+        .mailing-list p {
+            max-width: 500px;
+            margin: 0 auto 32px;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        .signup-form {
+            display: flex;
+            max-width: 480px;
+            margin: 0 auto;
+            gap: 0;
+        }
+
+        .signup-form input {
+            flex: 1;
+            padding: 14px 20px;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(245, 240, 232, 0.2);
+            border-right: none;
+            border-radius: 2px 0 0 2px;
+            color: var(--cream);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .signup-form input::placeholder {
+            color: rgba(245, 240, 232, 0.4);
+        }
+
+        .signup-form input:focus {
+            border-color: var(--orange);
+        }
+
+        .signup-form button {
+            padding: 14px 28px;
+            background: var(--orange);
+            color: var(--dark);
+            border: none;
+            border-radius: 0 2px 2px 0;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .signup-form button:hover {
+            background: var(--cream);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            padding: 60px 40px;
+            text-align: center;
+            border-top: 1px solid rgba(245, 240, 232, 0.06);
+        }
+
+        footer .footer-globe {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            animation: spin 15s linear infinite;
+        }
+
+        footer .footer-globe img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .social-link {
+            display: inline-block;
+            color: var(--orange);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin-bottom: 24px;
+            transition: opacity 0.3s;
+        }
+
+        .social-link:hover {
+            opacity: 0.7;
+        }
+
+        footer .copyright {
+            font-size: 0.7rem;
+            opacity: 0.3;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 16px 20px;
+            }
+
+            nav ul {
+                gap: 16px;
+            }
+
+            nav ul li a {
+                font-size: 0.7rem;
+            }
+
+            section {
+                padding: 60px 20px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .event-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .event-details {
+                padding: 0;
+            }
+
+            .signup-form {
+                flex-direction: column;
+            }
+
+            .signup-form input {
+                border-right: 1px solid rgba(245, 240, 232, 0.2);
+                border-radius: 2px;
+            }
+
+            .signup-form button {
+                border-radius: 2px;
+            }
+
+            .globe-container {
+                width: 160px;
+                height: 160px;
+            }
+
+            .shop-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .shop-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                gap: 12px;
+            }
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Fade in animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nav -->
+    <nav>
+        <div class="logo-text">Venice Vintage Club</div>
+        <ul>
+            <li><a href="#shop">Shop</a></li>
+            <li><a href="#lookbook">Lookbook</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#events">Events</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="globe-container">
+                <img src="images/globe-logo.png" alt="Venice Vintage Club globe logo">
+            </div>
+            <h1>Venice Vintage Club</h1>
+            <div class="tagline">Life is short, shop vintage.</div>
+        </div>
+        <div class="scroll-hint">Scroll to explore</div>
+    </section>
+
+    <!-- Shop -->
+    <section class="shop" id="shop">
+        <div class="section-label fade-in">Now Available</div>
+        <h2 class="section-title fade-in">The Collection</h2>
+        <div class="shop-grid">
+            <div class="shop-item fade-in">
+                <div class="item-image">Coming Soon</div>
+                <div class="item-info">
+                    <h3>Vintage Denim Jacket</h3>
+                    <div class="price">$85</div>
+                    <div class="details">Size M &middot; 1990s</div>
+                    <div class="tags">
+                        <span class="tag">Outerwear</span>
+                        <span class="tag">Ship + Pickup</span>
+                    </div>
+                </div>
+            </div>
+            <div class="shop-item fade-in">
+                <div class="item-image">Coming Soon</div>
+                <div class="item-info">
+                    <h3>Patina Metal Sign</h3>
+                    <div class="price">$45</div>
+                    <div class="details">Wall Art &middot; Collectible</div>
+                    <div class="tags">
+                        <span class="tag">Decor</span>
+                        <span class="tag">Pickup Only</span>
+                    </div>
+                </div>
+            </div>
+            <div class="shop-item fade-in">
+                <div class="item-image">Coming Soon</div>
+                <div class="item-info">
+                    <h3>Graphic Band Tee</h3>
+                    <div class="price">$40</div>
+                    <div class="details">Size L &middot; Single Stitch</div>
+                    <div class="tags">
+                        <span class="tag">Tops</span>
+                        <span class="tag">Ship + Pickup</span>
+                    </div>
+                </div>
+            </div>
+            <div class="shop-item fade-in">
+                <div class="item-image">Coming Soon</div>
+                <div class="item-info">
+                    <h3>Chevy Remake Sign</h3>
+                    <div class="price">$60</div>
+                    <div class="details">Vintage Replica &middot; Metal</div>
+                    <div class="tags">
+                        <span class="tag">Collectible</span>
+                        <span class="tag">Pickup Only</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fulfillment-note fade-in">
+            All items available for shipping or local pickup in Venice. Can't make it to the pop-up? Shop here and pick up your order anytime.
+        </div>
+    </section>
+
+    <!-- Lookbook -->
+    <section class="lookbook" id="lookbook">
+        <div class="section-label fade-in">The Archive</div>
+        <h2 class="section-title fade-in">Lookbook</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item tall">
+                <img src="images/hero.jpg" alt="Venice Vintage Club">
+            </div>
+            <div class="gallery-item">
+                <img src="images/space.jpg" alt="The Space">
+            </div>
+            <div class="gallery-item">
+                <img src="images/hero.jpg" alt="Venice Vintage Club">
+            </div>
+            <div class="gallery-item wide">
+                <img src="images/space.jpg" alt="The Space">
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about" id="about">
+        <div class="section-label fade-in">The Club</div>
+        <h2 class="section-title fade-in">What Is This?</h2>
+        <div class="about-content">
+            <div class="about-text fade-in">
+                <p>
+                    Venice Vintage Club is a curated vintage experience out of Venice, California. Part pop-up shop, part community space, part creative archive. We sell hand-picked vintage clothing, collectibles, patina signs, wall art, and anything with a story worth telling.
+                </p>
+                <p>
+                    Think basement living room meets flea market meets art gallery. We host pop-up weekends where you can come dig through racks, find one-of-a-kind pieces, and be part of something that feels like the swap meets and co-ops that used to bring people together — just on a smaller, more personal scale.
+                </p>
+                <p>
+                    Everything on the walls is for sale. Everything on the racks has been lived in. This is vintage with a pulse.
+                </p>
+            </div>
+            <div class="about-image">
+                <img src="images/space.jpg" alt="The Venice Vintage Club space">
+            </div>
+        </div>
+    </section>
+
+    <!-- Events -->
+    <section class="events" id="events">
+        <div class="section-label fade-in">Mark Your Calendar</div>
+        <h2 class="section-title fade-in">Upcoming Pop-Ups</h2>
+        <div class="event-card fade-in">
+            <div class="event-date">
+                TBD
+                <span>2026</span>
+            </div>
+            <div class="event-details">
+                <h3>Grand Opening Pop-Up</h3>
+                <p>The first official Venice Vintage Club pop-up. Racks on racks, wall art, collectibles, good music, good people. Venice, CA.</p>
+            </div>
+            <button class="event-rsvp" onclick="document.getElementById('mailing-list').scrollIntoView({behavior: 'smooth'})">Get Notified</button>
+        </div>
+    </section>
+
+    <!-- Mailing List -->
+    <section class="mailing-list" id="mailing-list">
+        <div class="section-label fade-in">Stay In The Loop</div>
+        <h2 class="section-title fade-in">Join the Club</h2>
+        <p class="fade-in">Pop-up dates, new drops, community events, and first access to everything. No spam, just vibes.</p>
+        <form class="signup-form fade-in" onsubmit="handleSignup(event)">
+            <input type="email" placeholder="your@email.com" required>
+            <button type="submit">Join</button>
+        </form>
+        <p id="signup-success" style="display:none; margin-top: 16px; color: var(--orange); font-size: 0.9rem;">You're in. Welcome to the club.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-globe">
+            <img src="images/globe-logo.png" alt="Venice Vintage Club">
+        </div>
+        <a href="https://instagram.com/venicevintageclub" target="_blank" class="social-link">@venicevintageclub</a>
+        <br><br>
+        <div class="copyright">Venice Vintage Club &copy; 2026. All rights reserved.</div>
+    </footer>
+
+    <script>
+        // Intersection Observer for fade-in animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Mailing list signup (placeholder — wire up to your backend)
+        function handleSignup(e) {
+            e.preventDefault();
+            const email = e.target.querySelector('input').value;
+            console.log('Signup:', email);
+            e.target.style.display = 'none';
+            document.getElementById('signup-success').style.display = 'block';
+        }
+
+        // Globe spin on scroll (subtle parallax)
+        window.addEventListener('scroll', () => {
+            const globe = document.querySelector('.globe-container');
+            if (globe) {
+                const scrollY = window.scrollY;
+                globe.style.transform = `rotateY(${scrollY * 0.3}deg)`;
+            }
+        });
+    </script>
+
+</body>
+</html>
