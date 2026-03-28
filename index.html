@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Venice Vintage Club</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap');
 
@@ -43,6 +44,445 @@
             z-index: 9999;
         }
 
+        /* Garage split photos */
+        .garage-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+        }
+
+        .garage-split-img {
+            overflow: hidden;
+            height: 70vh;
+        }
+
+        .garage-split-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: contrast(1.05) saturate(0.9);
+            transition: transform 0.6s ease;
+        }
+
+        .garage-split-img:hover img {
+            transform: scale(1.03);
+        }
+
+        /* Neon VVC Sign - garage wall mounted feel */
+        .neon-sign {
+            padding: 120px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            /* Warm plywood/garage wall base */
+            background: #1a1008;
+        }
+
+        /* Wood grain texture */
+        .neon-sign::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background:
+                repeating-linear-gradient(
+                    2deg,
+                    transparent,
+                    transparent 8px,
+                    rgba(139, 90, 43, 0.04) 8px,
+                    rgba(139, 90, 43, 0.04) 9px
+                ),
+                repeating-linear-gradient(
+                    178deg,
+                    transparent,
+                    transparent 15px,
+                    rgba(100, 60, 20, 0.03) 15px,
+                    rgba(100, 60, 20, 0.03) 16px
+                ),
+                linear-gradient(180deg, rgba(20, 12, 5, 0.9) 0%, rgba(30, 18, 8, 0.85) 50%, rgba(20, 12, 5, 0.9) 100%);
+        }
+
+        /* Warm amber glow on wall from the sign */
+        .neon-sign::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 700px;
+            height: 600px;
+            background:
+                radial-gradient(
+                    ellipse,
+                    rgba(91, 46, 229, 0.15) 0%,
+                    rgba(240, 122, 26, 0.10) 30%,
+                    rgba(200, 140, 50, 0.05) 50%,
+                    transparent 70%
+                );
+            pointer-events: none;
+        }
+
+        .neon-wrapper {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            padding: 40px 20px;
+            animation: sign-buzz 10s linear infinite;
+        }
+
+        /* Haze / fog overlay on the neon sign */
+        .neon-haze {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(ellipse at 50% 40%, rgba(91, 46, 229, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 40% 60%, rgba(240, 122, 26, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 50%, rgba(91, 46, 229, 0.08) 0%, transparent 55%);
+            animation: haze-drift 8s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes haze-drift {
+            0% { opacity: 0.6; transform: scale(1) translateY(0); }
+            50% { opacity: 1; transform: scale(1.05) translateY(-5px); }
+            100% { opacity: 0.7; transform: scale(0.98) translateY(3px); }
+        }
+
+        /* Smoke/dust particles */
+        .neon-smoke {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.4' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.08;
+            mix-blend-mode: soft-light;
+            pointer-events: none;
+            animation: smoke-move 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes smoke-move {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(10px, -5px); }
+        }
+
+        .neon-top-text {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(0.8rem, 2vw, 1.1rem);
+            font-style: italic;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--orange);
+            text-shadow:
+                0 0 4px var(--orange),
+                0 0 11px var(--orange),
+                0 0 22px rgba(240, 122, 26, 0.5),
+                0 0 40px rgba(240, 122, 26, 0.25);
+            margin-bottom: 6px;
+            animation: flicker-orange-top 4s steps(1) infinite;
+        }
+
+        /* VVC Logo as neon image */
+        .neon-logo-img {
+            width: clamp(280px, 50vw, 480px);
+            margin: 0 auto;
+            position: relative;
+            aspect-ratio: 1;
+        }
+
+        .neon-layer {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Wide purple halo */
+        .glow-wide {
+            filter: blur(30px);
+            opacity: 0.6;
+            animation: glow-breathe 4s ease-in-out infinite;
+        }
+
+        /* Medium glow */
+        .glow-medium {
+            filter: blur(14px);
+            opacity: 0.7;
+            animation: flicker-glow 2.8s steps(1) infinite;
+        }
+
+        /* Close tight glow */
+        .glow-close {
+            filter: blur(6px);
+            opacity: 0.8;
+            animation: flicker-tube 3.5s steps(1) infinite;
+        }
+
+        /* Sharp logo on top */
+        .neon-sharp {
+            opacity: 1;
+            animation: flicker-sharp 5s steps(1) infinite;
+        }
+
+        @keyframes glow-breathe {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            25% { opacity: 0.35; }
+            50% { opacity: 0.65; transform: scale(1.03); }
+            75% { opacity: 0.4; }
+        }
+
+        /* Rapid stuttery flicker - like a bad ballast */
+        @keyframes flicker-glow {
+            0% { opacity: 0.7; }
+            3% { opacity: 0.1; }
+            4% { opacity: 0.65; }
+            5% { opacity: 0.15; }
+            6% { opacity: 0.7; }
+            15% { opacity: 0.7; }
+            15.5% { opacity: 0.05; }
+            16% { opacity: 0.6; }
+            16.5% { opacity: 0.1; }
+            17% { opacity: 0.55; }
+            17.5% { opacity: 0.7; }
+            35% { opacity: 0.65; }
+            35.5% { opacity: 0.2; }
+            36% { opacity: 0.7; }
+            52% { opacity: 0.7; }
+            52.5% { opacity: 0.0; }
+            53% { opacity: 0.5; }
+            53.5% { opacity: 0.1; }
+            54% { opacity: 0.6; }
+            54.5% { opacity: 0.05; }
+            55% { opacity: 0.7; }
+            72% { opacity: 0.65; }
+            72.5% { opacity: 0.15; }
+            73% { opacity: 0.7; }
+            88% { opacity: 0.7; }
+            88.5% { opacity: 0.1; }
+            89% { opacity: 0.5; }
+            89.5% { opacity: 0.0; }
+            90% { opacity: 0.6; }
+            90.5% { opacity: 0.7; }
+            100% { opacity: 0.7; }
+        }
+
+        @keyframes flicker-tube {
+            0% { opacity: 0.8; }
+            7% { opacity: 0.8; }
+            7.5% { opacity: 0.1; }
+            8% { opacity: 0.7; }
+            8.5% { opacity: 0.0; }
+            9% { opacity: 0.75; }
+            9.5% { opacity: 0.8; }
+            28% { opacity: 0.8; }
+            28.5% { opacity: 0.2; }
+            29% { opacity: 0.8; }
+            44% { opacity: 0.75; }
+            44.5% { opacity: 0.05; }
+            45% { opacity: 0.6; }
+            45.5% { opacity: 0.1; }
+            46% { opacity: 0.7; }
+            46.5% { opacity: 0.0; }
+            47% { opacity: 0.8; }
+            63% { opacity: 0.8; }
+            63.5% { opacity: 0.15; }
+            64% { opacity: 0.75; }
+            64.5% { opacity: 0.8; }
+            81% { opacity: 0.8; }
+            81.5% { opacity: 0.0; }
+            82% { opacity: 0.65; }
+            82.5% { opacity: 0.1; }
+            83% { opacity: 0.8; }
+            100% { opacity: 0.8; }
+        }
+
+        @keyframes flicker-sharp {
+            0% { opacity: 1; }
+            4% { opacity: 0.3; }
+            4.5% { opacity: 0.9; }
+            5% { opacity: 0.2; }
+            5.5% { opacity: 0.85; }
+            6% { opacity: 1; }
+            20% { opacity: 1; }
+            20.5% { opacity: 0.4; }
+            21% { opacity: 1; }
+            38% { opacity: 0.95; }
+            38.5% { opacity: 0.15; }
+            39% { opacity: 0.8; }
+            39.5% { opacity: 0.1; }
+            40% { opacity: 0.9; }
+            40.5% { opacity: 0.2; }
+            41% { opacity: 1; }
+            58% { opacity: 1; }
+            58.5% { opacity: 0.5; }
+            59% { opacity: 0.95; }
+            59.5% { opacity: 1; }
+            75% { opacity: 1; }
+            75.5% { opacity: 0.1; }
+            76% { opacity: 0.7; }
+            76.5% { opacity: 0.0; }
+            77% { opacity: 0.85; }
+            77.5% { opacity: 0.15; }
+            78% { opacity: 0.9; }
+            78.5% { opacity: 1; }
+            92% { opacity: 1; }
+            92.5% { opacity: 0.35; }
+            93% { opacity: 1; }
+            100% { opacity: 1; }
+        }
+
+        /* Divider line - neon tube */
+        .neon-divider {
+            width: 80%;
+            height: 2px;
+            margin: 10px auto;
+            background: var(--orange);
+            box-shadow:
+                0 0 4px var(--orange),
+                0 0 10px var(--orange),
+                0 0 20px rgba(240, 122, 26, 0.4),
+                0 0 40px rgba(240, 122, 26, 0.15);
+            border-radius: 2px;
+            animation: flicker-orange-top 3.2s steps(1) infinite;
+        }
+
+        .neon-divider:last-of-type {
+            animation: flicker-orange-bottom 4.1s steps(1) infinite;
+        }
+
+        .neon-bottom-text {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(1rem, 3vw, 1.6rem);
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--orange);
+            text-shadow:
+                0 0 4px var(--orange),
+                0 0 11px var(--orange),
+                0 0 22px rgba(240, 122, 26, 0.5),
+                0 0 40px rgba(240, 122, 26, 0.25);
+            margin-top: 6px;
+            animation: flicker-orange-bottom 5.5s steps(1) infinite;
+        }
+
+        @keyframes flicker-1 {
+            0% { opacity: 1; }
+            5% { opacity: 0.3; }
+            5.5% { opacity: 1; }
+            6% { opacity: 0.4; }
+            6.5% { opacity: 1; }
+            18% { opacity: 1; }
+            19% { opacity: 0.15; }
+            19.5% { opacity: 0.9; }
+            20% { opacity: 0.2; }
+            21% { opacity: 1; }
+            45% { opacity: 1; }
+            46% { opacity: 0.6; }
+            46.5% { opacity: 1; }
+            55% { opacity: 1; }
+            55.5% { opacity: 0.1; }
+            56% { opacity: 0.8; }
+            56.5% { opacity: 0.2; }
+            57% { opacity: 1; }
+            80% { opacity: 1; }
+            80.5% { opacity: 0.5; }
+            81% { opacity: 1; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes flicker-2 {
+            0% { opacity: 1; }
+            12% { opacity: 1; }
+            12.5% { opacity: 0.2; }
+            13% { opacity: 0.9; }
+            13.5% { opacity: 0.1; }
+            14% { opacity: 1; }
+            35% { opacity: 1; }
+            35.5% { opacity: 0.4; }
+            36% { opacity: 1; }
+            42% { opacity: 1; }
+            42.5% { opacity: 0.08; }
+            43% { opacity: 0.7; }
+            43.5% { opacity: 0.15; }
+            44% { opacity: 0.9; }
+            44.5% { opacity: 1; }
+            68% { opacity: 1; }
+            68.5% { opacity: 0.3; }
+            69% { opacity: 1; }
+            88% { opacity: 1; }
+            88.5% { opacity: 0.5; }
+            89% { opacity: 0.1; }
+            89.5% { opacity: 0.8; }
+            90% { opacity: 1; }
+            100% { opacity: 1; }
+        }
+
+        /* Whole sign occasional buzz */
+        @keyframes sign-buzz {
+            0%, 100% { opacity: 1; }
+            30% { opacity: 1; }
+            30.2% { opacity: 0.85; }
+            30.4% { opacity: 1; }
+            65% { opacity: 1; }
+            65.3% { opacity: 0.7; }
+            65.5% { opacity: 0.95; }
+            65.7% { opacity: 0.75; }
+            65.9% { opacity: 1; }
+        }
+
+        @keyframes flicker-orange-top {
+            0% { opacity: 1; }
+            10% { opacity: 1; }
+            10.5% { opacity: 0.2; }
+            11% { opacity: 0.8; }
+            11.5% { opacity: 0.1; }
+            12% { opacity: 0.9; }
+            12.5% { opacity: 1; }
+            33% { opacity: 1; }
+            33.5% { opacity: 0.3; }
+            34% { opacity: 1; }
+            60% { opacity: 0.95; }
+            60.5% { opacity: 0.15; }
+            61% { opacity: 0.7; }
+            61.5% { opacity: 0.0; }
+            62% { opacity: 0.85; }
+            62.5% { opacity: 1; }
+            85% { opacity: 1; }
+            85.5% { opacity: 0.4; }
+            86% { opacity: 1; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes flicker-orange-bottom {
+            0% { opacity: 1; }
+            6% { opacity: 1; }
+            6.5% { opacity: 0.0; }
+            7% { opacity: 0.7; }
+            7.5% { opacity: 0.1; }
+            8% { opacity: 0.85; }
+            8.5% { opacity: 0.2; }
+            9% { opacity: 1; }
+            25% { opacity: 1; }
+            25.5% { opacity: 0.3; }
+            26% { opacity: 0.9; }
+            26.5% { opacity: 1; }
+            48% { opacity: 1; }
+            48.5% { opacity: 0.15; }
+            49% { opacity: 0.75; }
+            49.5% { opacity: 0.05; }
+            50% { opacity: 0.6; }
+            50.5% { opacity: 1; }
+            70% { opacity: 0.95; }
+            70.5% { opacity: 0.2; }
+            71% { opacity: 1; }
+            90% { opacity: 1; }
+            90.5% { opacity: 0.1; }
+            91% { opacity: 0.8; }
+            91.5% { opacity: 0.0; }
+            92% { opacity: 0.9; }
+            92.5% { opacity: 1; }
+            100% { opacity: 1; }
+        }
+
         /* Nav */
         nav {
             position: fixed;
@@ -57,6 +497,26 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(245, 240, 232, 0.08);
+        }
+
+        nav .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        nav .logo-img-wrap {
+            height: 36px;
+            width: 36px;
+            flex-shrink: 0;
+        }
+
+        nav .logo-img-wrap img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+            filter: brightness(0) saturate(100%) invert(22%) sepia(95%) saturate(4800%) hue-rotate(254deg) brightness(92%) contrast(95%);
         }
 
         nav .logo-text {
@@ -525,17 +985,17 @@
             border-top: 1px solid rgba(245, 240, 232, 0.06);
         }
 
-        footer .footer-globe {
+        footer .footer-logo {
             width: 100px;
             height: 100px;
             margin: 0 auto 24px;
-            animation: globe-spin 15s linear infinite;
         }
 
-        footer .footer-globe img {
+        footer .footer-logo img {
             width: 100%;
             height: 100%;
             object-fit: contain;
+            filter: brightness(0) saturate(100%) invert(22%) sepia(95%) saturate(4800%) hue-rotate(254deg) brightness(92%) contrast(95%);
         }
 
         .social-link {
@@ -619,6 +1079,14 @@
                 gap: 12px;
             }
 
+            .garage-split {
+                grid-template-columns: 1fr;
+            }
+
+            .garage-split-img {
+                height: 50vh;
+            }
+
             .photo-break img {
                 height: 50vh;
             }
@@ -665,7 +1133,12 @@
 
     <!-- Nav -->
     <nav>
-        <div class="logo-text">Venice Vintage Club</div>
+        <a href="#" class="logo-link">
+            <div class="logo-img-wrap">
+                <img src="images/vvc-logo-clean.png" alt="VVC">
+            </div>
+            <span class="logo-text">Venice Vintage Club</span>
+        </a>
         <ul>
             <li><a href="#lookbook">Lookbook</a></li>
             <li><a href="#about">The Club</a></li>
@@ -686,6 +1159,27 @@
         </div>
         <div class="scroll-hint">Scroll to explore</div>
     </section>
+
+    <!-- Neon VVC Sign -->
+    <div class="neon-sign">
+        <div class="neon-haze"></div>
+        <div class="neon-smoke"></div>
+        <div class="neon-wrapper">
+            <div class="neon-top-text">Venice</div>
+            <div class="neon-divider"></div>
+            <!-- VVC logo as neon sign - actual logo with glow effects -->
+            <div class="neon-logo-img">
+                <!-- Purple glow layers using pre-tinted images -->
+                <img src="images/vvc-logo-purple.png" alt="" class="neon-layer glow-wide" aria-hidden="true">
+                <img src="images/vvc-logo-purple.png" alt="" class="neon-layer glow-medium" aria-hidden="true">
+                <img src="images/vvc-logo-purple.png" alt="" class="neon-layer glow-close" aria-hidden="true">
+                <!-- Main sharp logo on top - bright neon tube -->
+                <img src="images/vvc-logo-neon.png" alt="VVC" class="neon-layer neon-sharp">
+            </div>
+            <div class="neon-divider"></div>
+            <div class="neon-bottom-text">Vintage Club</div>
+        </div>
+    </div>
 
     <!-- Full bleed photo -->
     <div class="photo-break">
@@ -731,6 +1225,42 @@
             <div class="gallery-item">
                 <img src="images/space.jpg" alt="The Space">
             </div>
+            <div class="gallery-item tall">
+                <img src="images/photo-12.jpg" alt="Basketball courts">
+            </div>
+            <div class="gallery-item">
+                <img src="images/photo-13.jpg" alt="Beach walk">
+            </div>
+            <div class="gallery-item">
+                <img src="images/photo-14.jpg" alt="Golden hour beach">
+            </div>
+            <div class="gallery-item wide">
+                <img src="images/photo-15.jpg" alt="Venice palms sunset">
+            </div>
+            <div class="gallery-item">
+                <img src="images/photo-16.jpg" alt="Skate park crew">
+            </div>
+            <div class="gallery-item">
+                <img src="images/photo-17.jpg" alt="NICE sign">
+            </div>
+            <div class="gallery-item tall">
+                <img src="images/photo-18.jpg" alt="Portrait">
+            </div>
+            <div class="gallery-item">
+                <img src="images/photo-19.jpg" alt="Barber shop">
+            </div>
+            <div class="gallery-item wide">
+                <img src="images/photo-20.jpg" alt="Venice bench palms">
+            </div>
+            <div class="gallery-item">
+                <img src="images/photo-21.jpg" alt="Venice boardwalk">
+            </div>
+            <div class="gallery-item">
+                <img src="images/photo-22.jpg" alt="Venice skate park">
+            </div>
+            <div class="gallery-item">
+                <img src="images/photo-23.jpg" alt="Beach blanket">
+            </div>
         </div>
     </section>
 
@@ -738,6 +1268,16 @@
     <div class="photo-break">
         <img src="images/photo-06.jpg" alt="Sunset">
         <div class="photo-caption">The golden hour.</div>
+    </div>
+
+    <!-- The Garage - side by side -->
+    <div class="garage-split">
+        <div class="garage-split-img">
+            <img src="images/garage-neon.jpg" alt="The VVC Garage - neon signs and racks">
+        </div>
+        <div class="garage-split-img">
+            <img src="images/garage-office.jpg" alt="The VVC Garage - office corner">
+        </div>
     </div>
 
     <!-- About / The Club -->
@@ -837,8 +1377,8 @@
 
     <!-- Footer -->
     <footer>
-        <div class="footer-globe">
-            <img src="images/globe-logo-clean.png" alt="Venice Vintage Club">
+        <div class="footer-logo">
+            <img src="images/vvc-logo-clean.png" alt="Venice Vintage Club">
         </div>
         <a href="https://instagram.com/venicevintageclub" target="_blank" class="social-link">@venicevintageclub</a>
         <br><br>
