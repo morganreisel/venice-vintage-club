@@ -1094,15 +1094,12 @@
         }
 
         .sign-backing {
-            background: rgba(10, 5, 2, 0.6);
-            border: 1px solid rgba(91, 46, 229, 0.15);
+            background: transparent;
+            border: none;
             border-radius: 4px;
             padding: 30px 40px;
             position: relative;
-            box-shadow:
-                0 20px 60px rgba(0,0,0,0.5),
-                0 0 80px rgba(91, 46, 229, 0.08),
-                inset 0 0 60px rgba(0,0,0,0.3);
+            box-shadow: none;
         }
 
         .sign-backing::before {
@@ -1170,12 +1167,16 @@
             bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.65rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            opacity: 0.3;
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            letter-spacing: 0.1em;
+            text-transform: none;
+            color: var(--orange);
+            opacity: 1;
             z-index: 5;
-            animation: pulse 2s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(240, 122, 26, 0.6), 0 0 30px rgba(240, 122, 26, 0.3), 0 0 60px rgba(240, 122, 26, 0.1);
+            animation: pulse 2.5s ease-in-out infinite;
         }
 
         @keyframes pulse {
@@ -1214,7 +1215,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: var(--dark);
+            background: transparent;
             padding: 100px 40px;
         }
 
@@ -1353,6 +1354,72 @@
             text-shadow: 0 4px 40px rgba(0,0,0,0.5);
         }
 
+        /* Community carousel — tall filmstrip with text overlay */
+        .community-carousel {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            overflow: hidden;
+        }
+
+        .community-carousel .filmstrip {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .community-carousel .filmstrip-frame {
+            width: 450px;
+            height: 340px;
+            flex-shrink: 0;
+        }
+
+        .community-carousel .filmstrip-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.55) contrast(1.05) saturate(0.9);
+            transition: filter 0.4s ease;
+        }
+
+        .community-carousel .filmstrip-track:hover {
+            animation-play-state: running !important;
+        }
+
+        .community-carousel .filmstrip-frame:hover img {
+            filter: brightness(0.75) contrast(1.05) saturate(1);
+        }
+
+        .community-carousel-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .community-carousel-overlay span {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-style: italic;
+            color: var(--cream);
+            letter-spacing: 0.02em;
+            text-shadow: 0 4px 40px rgba(0,0,0,0.7), 0 0 80px rgba(0,0,0,0.4);
+        }
+
+        @media (max-width: 768px) {
+            .community-carousel {
+                height: 50vh;
+            }
+            .community-carousel .filmstrip-frame {
+                width: 300px;
+                height: 240px;
+            }
+        }
+
         .community-split {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1393,7 +1460,7 @@
         .community-quote {
             padding: 80px 40px;
             text-align: center;
-            background: var(--dark);
+            background: transparent;
         }
 
         .community-quote p {
@@ -1409,8 +1476,20 @@
 
         /* ======= THE SPACE — Bento Grid ======= */
         .the-space {
-            background: var(--dark);
+            background: transparent;
             padding: 100px 40px;
+        }
+
+        .space-subtitle {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-style: italic;
+            color: var(--orange);
+            text-align: center;
+            max-width: 1000px;
+            margin: -12px auto 48px;
+            line-height: 1.4;
+            text-shadow: 0 0 8px rgba(240, 122, 26, 0.3);
         }
 
         .the-space .section-label {
@@ -1539,7 +1618,7 @@
 
         /* ======= LOOKBOOK — Filmstrip ======= */
         .lookbook {
-            background: var(--dark);
+            background: transparent;
             padding-bottom: 0;
             overflow: hidden;
         }
@@ -1607,6 +1686,75 @@
         @keyframes filmstrip-scroll {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
+        }
+
+        /* Mood slideshow — full-bleed, static with crossfade */
+        .mood-slideshow {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            overflow: hidden;
+            background: transparent;
+            z-index: 1;
+        }
+
+        .mood-slideshow img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+            filter: contrast(1.08) saturate(0.85);
+        }
+
+        .mood-slideshow img.active {
+            opacity: 1;
+        }
+
+        .mood-slideshow .slide-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(245, 240, 232, 0.15);
+            color: var(--cream);
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 3;
+            transition: background 0.3s, border-color 0.3s;
+            border-radius: 2px;
+        }
+
+        .mood-slideshow .slide-arrow:hover {
+            background: rgba(240, 122, 26, 0.3);
+            border-color: var(--orange);
+        }
+
+        .mood-slideshow .slide-arrow--left {
+            left: 20px;
+        }
+
+        .mood-slideshow .slide-arrow--right {
+            right: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .mood-slideshow {
+                height: 50vh;
+            }
+            .mood-slideshow .slide-arrow {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
         }
 
         /* ======= PHOTO BREAK ======= */
@@ -1753,7 +1901,7 @@
 
         /* ======= THE DROP ======= */
         .the-drop {
-            background: var(--dark);
+            background: transparent;
             border-top: 1px solid rgba(245, 240, 232, 0.06);
         }
 
@@ -1861,7 +2009,7 @@
 
         /* ======= THE NEWSSTAND ======= */
         .the-newsstand {
-            background: var(--dark);
+            background: transparent;
             padding: 100px 40px;
             overflow: hidden;
         }
@@ -1969,7 +2117,7 @@
 
         /* ======= EMAIL CAPTURE — Mailchimp ======= */
         .email-capture {
-            background: var(--dark);
+            background: transparent;
             padding: 100px 40px;
             text-align: center;
             border-top: 1px solid rgba(245, 240, 232, 0.06);
@@ -2036,7 +2184,7 @@
 
         /* ======= FOOTER ======= */
         footer {
-            background: var(--dark);
+            background: transparent;
             padding: 20px 48px;
             border-top: 1px solid rgba(245, 240, 232, 0.06);
         }
@@ -2230,6 +2378,33 @@
 
             .globe-event-section {
                 padding: 60px 20px;
+            }
+
+            .mood-slideshow {
+                height: 50vh;
+            }
+
+            .mood-slideshow .slide-arrow {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+
+            .community-carousel {
+                height: 50vh;
+            }
+
+            .community-carousel .filmstrip-frame {
+                width: 300px;
+                height: 240px;
+            }
+
+            .closing-statement {
+                height: 40vh !important;
+            }
+
+            .hero-cta {
+                padding: 12px 32px;
             }
         }
 
@@ -2432,32 +2607,33 @@
                     <div class="neon-haze"></div>
                     <div class="neon-smoke"></div>
                     <div class="neon-wrapper">
-                        <div class="neon-top-text">Venice</div>
-                        <div class="neon-divider"></div>
                         <div class="neon-logo-img">
                             <img src="images/vvc-logo-purple.png" alt="" class="neon-layer glow-wide" aria-hidden="true">
                             <img src="images/vvc-logo-purple.png" alt="" class="neon-layer glow-medium" aria-hidden="true">
                             <img src="images/vvc-logo-purple.png" alt="" class="neon-layer glow-close" aria-hidden="true">
                             <img src="images/vvc-logo-neon.png" alt="VVC" class="neon-layer neon-sharp">
                         </div>
-                        <div class="neon-divider"></div>
-                        <div class="neon-bottom-text">Vintage Club</div>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- Tin sign slogans — desktop only, foreground -->
-        <div class="tin-sign tin-sign--left" aria-hidden="true">Racks on Racks<br>on Racks</div>
-        <div class="tin-sign tin-sign--right" aria-hidden="true">Life Is Short,<br>Shop Vintage</div>
-
-        <div class="scroll-hint">Scroll to explore</div>
+        <div class="scroll-hint">Scroll to Enter the Club &#x25BE;</div>
     </section>
 
-    <!-- Section 2: Lifestyle Separator -->
-    <div class="lifestyle-break" aria-label="Lifestyle photography">
-        <img src="images/photo-06.jpg" alt="Venice lifestyle">
+    <!-- Section 2: Mood Slideshow -->
+    <div class="mood-slideshow" id="mood-slideshow" aria-label="Venice photography slideshow">
+        <img src="images/photo-06.jpg" alt="Venice beach at sunset" class="active" loading="lazy">
+        <img src="images/photo-15.jpg" alt="Venice palms and graffiti poles" loading="lazy">
+        <img src="images/morgan-20.jpg" alt="Venice sign on the boulevard" loading="lazy">
+
+        <img src="images/photo-13.jpg" alt="Venice Beach boardwalk" loading="lazy">
+        <img src="images/morgan-43.jpg" alt="Blue VW Bug on a Venice street" loading="lazy">
+        <img src="images/photo-08.jpg" alt="Sky and clouds over Venice" loading="lazy">
+        <img src="images/photo-17.jpg" alt="NICE marquee sign against blue sky" loading="lazy">
+        <button class="slide-arrow slide-arrow--left" aria-label="Previous photo">&#8249;</button>
+        <button class="slide-arrow slide-arrow--right" aria-label="Next photo">&#8250;</button>
     </div>
 
     <!-- Section 3: Globe + Event (Countdown, CTA) -->
@@ -2471,7 +2647,7 @@
         <h2 class="fade-in">May 2nd &mdash; Venice, CA</h2>
         <div class="subtitle fade-in">First Pop-Up</div>
 
-        <p class="event-details fade-in">Doors at 6 PM. Racks on racks, wall art, collectibles, good music, good people. The first official Venice Vintage Club pop-up.</p>
+        <p class="event-details fade-in">Garage opens at 11 AM PST. Racks on racks, wall art, collectibles, good music, good people. The first official Venice Vintage Club pop-up.</p>
 
         <!-- Countdown timer -->
         <div class="countdown-digits fade-in">
@@ -2499,15 +2675,43 @@
 
     <!-- Section 4: Community — Editorial -->
     <section class="community" id="about" aria-label="The Club">
-        <!-- Full-bleed manifesto photo -->
-        <div class="community-manifesto">
-            <img src="images/photo-02.jpg" alt="Venice Vintage Club community">
-            <div class="manifesto-overlay">
+        <!-- Community carousel with overlay text -->
+        <div class="community-carousel">
+            <div class="filmstrip" style="margin-top:0; border-top:none; border-bottom:none;">
+                <div class="filmstrip-track" style="animation-duration: 60s;">
+                    <div class="filmstrip-frame"><img src="images/photo-02.jpg" alt="Venice Vintage Club" loading="lazy"></div>
+                    <div class="filmstrip-frame"><img src="images/morgan-14.jpg" alt="Garage couch hangout" loading="lazy"></div>
+                    <div class="filmstrip-frame"><img src="images/morgan-19.jpg" alt="Getting ready" loading="lazy"></div>
+                    <div class="filmstrip-frame"><img src="images/photo-04.jpg" alt="Beach portrait" loading="lazy"></div>
+                    <div class="filmstrip-frame"><img src="images/morgan-40.jpg" alt="Tiffany lamp portrait" loading="lazy"></div>
+                    <div class="filmstrip-frame"><img src="images/morgan-08.jpg" alt="Sneakers and skateboard" loading="lazy"></div>
+                    <div class="filmstrip-frame"><img src="images/photo-10.jpg" alt="Golden hour portrait" loading="lazy"></div>
+                    <div class="filmstrip-frame"><img src="images/morgan-03.jpg" alt="Friends on the couch" loading="lazy"></div>
+                    <div class="filmstrip-frame"><img src="images/photo-05.jpg" alt="Coastal portrait" loading="lazy"></div>
+                    <!-- Duplicate for seamless loop -->
+                    <div class="filmstrip-frame"><img src="images/photo-02.jpg" alt="Venice Vintage Club" loading="lazy"></div>
+                    <div class="filmstrip-frame"><img src="images/morgan-14.jpg" alt="Garage couch hangout" loading="lazy"></div>
+                    <div class="filmstrip-frame"><img src="images/morgan-19.jpg" alt="Getting ready" loading="lazy"></div>
+                    <div class="filmstrip-frame"><img src="images/photo-04.jpg" alt="Beach portrait" loading="lazy"></div>
+                    <div class="filmstrip-frame"><img src="images/morgan-40.jpg" alt="Tiffany lamp portrait" loading="lazy"></div>
+                    <div class="filmstrip-frame"><img src="images/morgan-08.jpg" alt="Sneakers and skateboard" loading="lazy"></div>
+                    <div class="filmstrip-frame"><img src="images/photo-10.jpg" alt="Golden hour portrait" loading="lazy"></div>
+                    <div class="filmstrip-frame"><img src="images/morgan-03.jpg" alt="Friends on the couch" loading="lazy"></div>
+                    <div class="filmstrip-frame"><img src="images/photo-05.jpg" alt="Coastal portrait" loading="lazy"></div>
+                </div>
+            </div>
+            <div class="community-carousel-overlay">
                 <span class="fade-in">"A club, not a store."</span>
             </div>
         </div>
 
-        <!-- 50/50 split -->
+    </section>
+
+    <!-- Section 5: The Space -->
+    <section class="the-space" id="the-space" aria-label="The Space">
+        <div class="section-label fade-in">The Space</div>
+        <h2 class="section-title fade-in">Where It Happens</h2>
+        <p class="space-subtitle fade-in">"A place where the racks have stories, the walls are for sale, and everyone's invited."</p>
         <div class="community-split">
             <div class="community-split-img">
                 <img src="images/garage-neon.jpg" alt="The Garage">
@@ -2518,41 +2722,13 @@
                 <span class="corner-label">The Office</span>
             </div>
         </div>
-
-        <!-- Manifesto quote -->
-        <div class="community-quote">
-            <p class="fade-in">"A place where the racks have stories, the walls are for sale, and everyone's invited."</p>
-        </div>
-    </section>
-
-    <!-- Section 5: The Space — Bento Grid -->
-    <section class="the-space" id="the-space" aria-label="The Space">
-        <div class="section-label fade-in">The Space</div>
-        <h2 class="section-title fade-in">Where It Happens</h2>
-        <div class="bento-grid">
-            <!-- Row 1: wide image + letter board -->
-            <div class="bento-item bento-item--wide fade-in">
-                <img src="images/garage-neon.jpg" alt="The Garage neon glow">
-                <span class="bento-label">The Garage</span>
-            </div>
-            <div class="bento-item letter-board fade-in">
-                <p>"A club,<br>not a store."</p>
-            </div>
-            <!-- Row 2: tin sign + wide image -->
-            <div class="bento-item tin-sign-card fade-in">
-                <p>Vintage With<br>a Pulse</p>
-            </div>
-            <div class="bento-item bento-item--wide fade-in">
-                <img src="images/garage-office.jpg" alt="The Office setup">
-                <span class="bento-label">The Office</span>
-            </div>
-        </div>
     </section>
 
     <!-- Section 6: Lookbook — Filmstrip -->
     <section class="lookbook" id="lookbook" aria-label="Lookbook">
         <div class="section-label fade-in">The Archive</div>
         <h2 class="section-title fade-in">Lookbook</h2>
+        <p class="space-subtitle fade-in">"Vintage With a Pulse"</p>
         <div class="filmstrip">
             <div class="filmstrip-track">
                 <!-- Set A -->
@@ -2593,23 +2769,17 @@
         </div>
     </section>
 
-    <!-- Section 7: Photo Break -->
-    <div class="photo-break">
-        <img src="images/photo-01.jpg" alt="Venice boardwalk">
-        <div class="photo-caption">Venice, California</div>
-    </div>
-
     <!-- Section 8: The Event — RSVP -->
     <section class="the-event" id="events" aria-label="RSVP for the event">
         <div class="event-bg">
             <img src="images/space.jpg" alt="The Space">
         </div>
         <div class="event-overlay">
-            <div class="section-label fade-in">The Event</div>
-            <h2 class="event-headline fade-in">May 2nd, 2026</h2>
-            <p class="event-location fade-in">Venice, California</p>
+            <div class="section-label fade-in">What to Expect</div>
+            <h2 class="event-headline fade-in">The Pop-Up</h2>
+            <p class="event-location fade-in">May 2nd, 2026 &mdash; Venice, California</p>
             <div class="event-info">
-                <p class="fade-in">Doors at 6 PM. Racks on racks, wall art, collectibles, good music, good people. The first official Venice Vintage Club pop-up.</p>
+                <p class="fade-in">Walk in. Flip through the racks. Grab a drink. The walls are covered in vintage signs, the speakers are loud, and every piece has a story. This isn't a store — it's a Saturday you won't forget.</p>
             </div>
             <form class="signup-form fade-in" onsubmit="handleEventSignup(event)">
                 <input type="email" placeholder="RSVP &mdash; enter your email" required aria-label="Email for RSVP">
@@ -2622,6 +2792,7 @@
     <!-- Section 9: The Drop -->
     <section class="the-drop" id="drop" aria-label="Shop the drop">
         <div class="section-label fade-in">Can't Make It?</div>
+        <p class="fade-in" style="font-family:'DM Serif Display',serif; font-size:clamp(1.5rem,4vw,2.5rem); font-style:italic; color:var(--orange); text-align:center; margin-bottom:8px; text-shadow:0 0 8px rgba(240,122,26,0.3);">"Racks on Racks on Racks"</p>
         <h2 class="section-title fade-in">The Drop</h2>
         <div class="drop-grid">
             <div class="drop-item fade-in">
@@ -2721,6 +2892,13 @@
 
     </main>
 
+    <div class="closing-statement" style="position:relative; width:100%; height:50vh; overflow:hidden; z-index:1;">
+        <img src="images/photo-01.jpg" alt="" style="width:100%; height:100%; object-fit:cover; filter:brightness(0.25) contrast(1.1) saturate(0.8);">
+        <div style="position:absolute; top:0; left:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; padding:40px;">
+            <p style="font-family:'DM Serif Display',serif; font-size:clamp(2rem,6vw,4rem); font-style:italic; color:var(--orange); text-shadow:0 0 10px rgba(240,122,26,0.5), 0 0 40px rgba(240,122,26,0.2); text-align:center;">"Life Is Short, Shop Vintage"</p>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer aria-label="Site footer">
         <div class="footer-inner">
@@ -2748,7 +2926,7 @@
 
         // ======= Countdown to May 2, 2026 at 6PM PT =======
         (function() {
-            const target = new Date('2026-05-02T18:00:00-07:00').getTime();
+            const target = new Date('2026-05-02T11:00:00-08:00').getTime();
             function update() {
                 const diff = Math.max(0, target - Date.now());
                 const d = Math.floor(diff / 86400000);
@@ -2851,6 +3029,31 @@
                 document.body.style.overflow = '';
             });
         });
+
+        // Mood slideshow — auto-advance + arrows
+        (function() {
+            const show = document.getElementById('mood-slideshow');
+            if (!show) return;
+            const slides = show.querySelectorAll('img');
+            let current = 0;
+            let timer;
+
+            function go(i) {
+                slides[current].classList.remove('active');
+                current = (i + slides.length) % slides.length;
+                slides[current].classList.add('active');
+                resetTimer();
+            }
+
+            function resetTimer() {
+                clearInterval(timer);
+                timer = setInterval(function() { go(current + 1); }, 8000);
+            }
+
+            show.querySelector('.slide-arrow--left').addEventListener('click', function() { go(current - 1); });
+            show.querySelector('.slide-arrow--right').addEventListener('click', function() { go(current + 1); });
+            resetTimer();
+        })();
     </script>
 
 </body>
