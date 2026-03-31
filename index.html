@@ -243,15 +243,15 @@
         }
 
         nav .logo-img-wrap {
-            height: 36px;
-            width: 36px;
+            height: 48px;
+            width: 48px;
             flex-shrink: 0;
             transition: height 0.3s ease, width 0.3s ease;
         }
 
         nav.scrolled .logo-img-wrap {
-            height: 28px;
-            width: 28px;
+            height: 36px;
+            width: 36px;
         }
 
         nav .logo-img-wrap img {
@@ -263,14 +263,14 @@
 
         nav .logo-text {
             font-family: 'DM Serif Display', serif;
-            font-size: 1.05rem;
+            font-size: 1.25rem;
             color: var(--orange);
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             transition: font-size 0.3s ease;
         }
 
         nav.scrolled .logo-text {
-            font-size: 0.9rem;
+            font-size: 1.05rem;
         }
 
         /* Nav links — left aligned */
@@ -1168,14 +1168,14 @@
             left: 50%;
             transform: translateX(-50%);
             font-family: 'DM Serif Display', serif;
-            font-size: 1.1rem;
+            font-size: 1.4rem;
             font-style: italic;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.12em;
             text-transform: none;
             color: var(--orange);
             opacity: 1;
             z-index: 5;
-            text-shadow: 0 0 10px rgba(240, 122, 26, 0.6), 0 0 30px rgba(240, 122, 26, 0.3), 0 0 60px rgba(240, 122, 26, 0.1);
+            text-shadow: 0 0 12px rgba(240, 122, 26, 0.7), 0 0 40px rgba(240, 122, 26, 0.4), 0 0 80px rgba(240, 122, 26, 0.15);
             animation: pulse 2.5s ease-in-out infinite;
         }
 
@@ -1621,6 +1621,15 @@
             background: transparent;
             padding-bottom: 0;
             overflow: hidden;
+        }
+
+        .lookbook .filmstrip-frame {
+            width: 450px;
+            height: 340px;
+        }
+
+        .lookbook .filmstrip-track {
+            animation-duration: 60s;
         }
 
         .filmstrip {
@@ -2472,24 +2481,11 @@
     <nav aria-label="Main navigation">
         <div class="nav-inner">
 
-            <!-- Left — community-first links -->
+            <!-- Left — community-first, Shop last for mega menu -->
             <ul class="nav-links">
                 <li class="nav-item"><a href="#events"><span class="navtext">Events</span></a></li>
                 <li class="nav-item"><a href="#the-space"><span class="navtext">The Space</span></a></li>
                 <li class="nav-item"><a href="#about"><span class="navtext">The Club</span></a></li>
-            </ul>
-
-            <!-- Center — logo -->
-            <a href="#" class="logo-link">
-                <div class="logo-img-wrap">
-                    <img src="images/vvc-logo-clean.png" alt="VVC">
-                </div>
-                <span class="logo-text">Venice Vintage Club</span>
-            </a>
-
-            <!-- Right — shop-side links + utilities -->
-            <ul class="nav-utils">
-                <li><a href="#drop"><span class="navtext">New Arrivals</span></a></li>
                 <li class="nav-item has-dropdown">
                     <a href="#drop"><span class="navtext">Shop</span></a>
                     <div class="mega-menu mega-shop">
@@ -2509,9 +2505,7 @@
                                     <li><a href="#drop">Jackets &amp; Outerwear</a></li>
                                     <li><a href="#drop">Bottoms</a></li>
                                     <li><a href="#drop">Denim</a></li>
-                                    <li><a href="#drop">Dresses &amp; Skirts</a></li>
                                     <li><a href="#drop">Accessories</a></li>
-                                    <li><a href="#drop">Footwear</a></li>
                                 </ul>
                             </div>
                             <div class="mega-column">
@@ -2537,16 +2531,20 @@
                         </div>
                     </div>
                 </li>
-                <li><a href="#drop"><span class="navtext">Archive</span></a></li>
-                <li><a href="#" aria-label="Search">
-                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
-                </a></li>
-                <li><a href="#" aria-label="Account">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-3.3 2.7-6 6-6h4c3.3 0 6 2.7 6 6"/></svg>
-                </a></li>
-                <li><a href="#" aria-label="Cart">
-                    <svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L5 2H2"/></svg>
-                </a></li>
+            </ul>
+
+            <!-- Center — logo + branding -->
+            <a href="#" class="logo-link">
+                <div class="logo-img-wrap">
+                    <img src="images/vvc-logo-clean.png" alt="VVC">
+                </div>
+                <span class="logo-text">Venice Vintage Club</span>
+            </a>
+
+            <!-- Right — Lookbook + The Drop -->
+            <ul class="nav-utils">
+                <li><a href="#lookbook"><span class="navtext">Lookbook</span></a></li>
+                <li><a href="#drop"><span class="navtext">The Drop</span></a></li>
             </ul>
 
             <!-- Hamburger — mobile -->
@@ -2565,30 +2563,9 @@
             <li class="mobile-drawer-item"><a href="#events">Events</a></li>
             <li class="mobile-drawer-item"><a href="#the-space">The Space</a></li>
             <li class="mobile-drawer-item"><a href="#about">The Club</a></li>
-            <li class="mobile-drawer-item"><a href="#drop">New Arrivals</a></li>
-            <li class="mobile-drawer-item has-sub">
-                <a href="#drop">Shop <span class="chevron"></span></a>
-                <ul class="mobile-sub-links">
-                    <li><a href="#drop">Shop All</a></li>
-                    <li><a href="#drop">New Arrivals</a></li>
-                    <li><a href="#drop">Tops &amp; Tees</a></li>
-                    <li><a href="#drop">Jackets &amp; Outerwear</a></li>
-                    <li><a href="#drop">Bottoms</a></li>
-                    <li><a href="#drop">Denim</a></li>
-                    <li><a href="#drop">Dresses &amp; Skirts</a></li>
-                    <li><a href="#drop">Accessories</a></li>
-                    <li><a href="#drop">Footwear</a></li>
-                </ul>
-            </li>
-            <li class="mobile-drawer-item has-sub">
-                <a href="#drop">Archive <span class="chevron"></span></a>
-                <ul class="mobile-sub-links">
-                    <li><a href="#drop">Summer '26</a></li>
-                    <li><a href="#drop">Venice Essentials</a></li>
-                    <li><a href="#drop">Throwback Denim</a></li>
-                    <li><a href="#drop">Boardwalk Classics</a></li>
-                </ul>
-            </li>
+            <li class="mobile-drawer-item"><a href="#drop">Shop</a></li>
+            <li class="mobile-drawer-item"><a href="#lookbook">Lookbook</a></li>
+            <li class="mobile-drawer-item"><a href="#drop">The Drop</a></li>
         </ul>
     </div>
 
