@@ -125,8 +125,82 @@ This was removed intentionally. If you want it back, ask a developer — it's st
 
 ## Accounts & Credentials
 
-- **Google Workspace login credentials** (Gmail, Drive, etc.) can be found in the Google Doc called **"VVC PRD"**
-- To manage the Google Workspace account (add users, reset passwords, billing), go to [admin.google.com](https://admin.google.com) and sign in with the VVC credentials from that doc
+All login info for VVC accounts can be found in the Google Doc called **"VVC PRD"**. Below is every account involved in running the site, what it's for, and when you'd need to log in.
+
+### 1. Google Workspace (Gmail, Drive, Calendar)
+
+| | |
+|---|---|
+| **What it is** | The VVC email (hello@venicevintageclub.com) and Google Drive where photos live |
+| **Login** | Go to [gmail.com](https://gmail.com) or [drive.google.com](https://drive.google.com) and sign in with the VVC email + password from the "VVC PRD" doc |
+| **Admin panel** | [admin.google.com](https://admin.google.com) — use this to add/remove users, reset passwords, or manage billing |
+| **When you need it** | To upload/change photos in Drive, check VVC email, or manage the account |
+
+### 2. GitHub (Where the website code lives)
+
+| | |
+|---|---|
+| **What it is** | The code repository and the system that automatically deploys the site |
+| **Login** | Go to [github.com](https://github.com) and sign in — credentials are in "VVC PRD" |
+| **Repository** | github.com/fmannion10/venice-vintage-club |
+| **When you need it** | Only to trigger a manual photo sync (Actions tab) or if a developer needs access to the code |
+
+**How to trigger a manual photo sync:**
+1. Log in to GitHub
+2. Go to the repository (link above)
+3. Click **"Actions"** tab
+4. Click **"Sync Google Drive Photos"** on the left
+5. Click **"Run workflow"** > green **"Run workflow"** button
+6. Wait 2-3 minutes — site updates automatically
+
+### 3. Cloudflare (Domain & DNS)
+
+| | |
+|---|---|
+| **What it is** | Controls the domain name (venicevintageclub.com) and where it points |
+| **Login** | Go to [dash.cloudflare.com](https://dash.cloudflare.com) — credentials are in "VVC PRD" |
+| **When you need it** | Almost never. Only if the domain expires, you need to change DNS settings, or you're moving the site to a new host. **Do not change anything here unless you know what you're doing or a developer is helping.** |
+
+**Important:** The domain has an annual renewal. Make sure the payment method on Cloudflare stays current or the domain will expire and the site will go down.
+
+### 4. Mailchimp (Email Marketing)
+
+| | |
+|---|---|
+| **What it is** | Manages the mailing list — collects emails from the signup forms on the site |
+| **Login** | Go to [mailchimp.com](https://mailchimp.com) — credentials are in "VVC PRD" (or create a new account if one hasn't been set up yet) |
+| **When you need it** | To view your subscriber list, send email campaigns/newsletters, or manage signup form settings |
+
+**Note:** Mailchimp is **not connected yet**. See the "Setting Up Mailchimp" section above for step-by-step instructions.
+
+---
+
+## Taking Over the Site — Step by Step
+
+If you're the new person managing VVC's website, here's exactly what to do:
+
+### First Day
+1. **Get the "VVC PRD" Google Doc** from Freddie or whoever is handing this off to you — it has all the login credentials
+2. **Log in to Google Workspace** ([gmail.com](https://gmail.com)) with the VVC email to make sure you have access
+3. **Log in to GitHub** ([github.com](https://github.com)) and find the repository — bookmark it
+4. **Read this entire document** so you know what's what
+
+### Ongoing (What You'll Actually Do)
+- **Swap photos:** Drag files in/out of Google Drive folders → site updates Mon/Wed/Fri automatically
+- **Check email:** Log in to Gmail with the VVC account for any site-related inquiries
+- **Send newsletters:** Log in to Mailchimp (once set up) to email your subscriber list
+
+### Things You Should NOT Touch
+- **Don't edit any code files** unless you know what you're doing
+- **Don't change anything in Cloudflare** unless a developer is helping
+- **Don't delete the GitHub repository** — that's the entire website
+- **Don't remove the `.drive-manifest.json` file** from the repository — the photo sync needs it
+
+### If Something Breaks
+1. Don't panic — the site is static HTML, so it's very hard to break permanently
+2. Check if the problem is just photos not updating (try a manual sync from GitHub Actions)
+3. If the site is completely down, check Cloudflare to make sure the domain hasn't expired
+4. Contact Freddie or a developer for anything else
 
 ---
 
