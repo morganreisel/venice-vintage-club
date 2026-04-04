@@ -5,22 +5,25 @@ Venice Vintage Club — Google Drive → Site Image Sync
 Pulls photos from a shared Google Drive folder (organized by section),
 converts/optimizes them, and updates index.html with new image references.
 
+!! IMPORTANT !!
+This script REPLACES all site photos with what's in Google Drive.
+Whatever is in the Drive folders IS the site. If you remove a photo
+from Drive, it disappears from the site. If you want a photo on the
+site, it must stay in the Drive folder — don't just add new ones and
+delete old ones unless you want the old ones gone from the site too.
+
 Drive folder structure expected:
   VVC Media/
     HERO/       → 1 image (hero background)
     MOOD/       → slideshow images
-    COMMUNITY/  → filmstrip carousel images
+    COMMUNITY/  → slideshow images (with overlay text)
     SPACE/      → venue photos (2-column split)
-    LOOKBOOK/   → lookbook filmstrip images
+    LOOKBOOK/   → slideshow images
     EVENT/      → 1 image (event background)
-    DROP/       → product images (up to 4)
     MORGAN/     → 1 image (about section background)
 
 Usage:
-    python3 sync-drive.py [--replace]
-
-    --replace   Replace ALL section images (default on first run)
-                Without this flag, new images are ADDED to existing ones.
+    python3 sync-drive.py --replace
 """
 
 import os
@@ -53,7 +56,6 @@ IMAGE_SIZES = {
     "space": (1200, 900),
     "lookbook": (800, 1000),
     "event": (2400, 1600),
-    "drop": (800, 1000),
     "morgan": (1920, 1280),
 }
 
@@ -239,33 +241,28 @@ def update_html_mood(html, images):
     return re.sub(pattern, replacement, html, flags=re.DOTALL)
 
 
-def build_filmstrip_html(images, section_label):
-    """Build filmstrip frames HTML for community/lookbook sections."""
-    frames = []
-    for img in images:
-        frames.append(
-            f'                    <div class="filmstrip-frame">'
-            f'<img src="images/{img}" alt="{section_label}" loading="lazy">'
-            f'</div>'
+def build_slideshow_html(images, alt_text):
+    """Build slideshow img tags for community/lookbook sections."""
+    tags = []
+    for i, img in enumerate(images):
+        active = ' class="active"' if i == 0 else ''
+        tags.append(
+            f'            <img src="images/{img}" alt="{alt_text}"{active} loading="lazy">'
         )
-    # Duplicate for seamless loop
-    set_a = "\n".join(frames)
-    set_b = "\n".join(frames)
-    return f"{set_a}\n                    <!-- Duplicate for seamless loop -->\n{set_b}"
+    return "\n".join(tags)
 
 
 def update_html_community(html, images):
-    """Update the community filmstrip carousel."""
+    """Update the community slideshow images."""
     if not images:
         return html
-    new_frames = build_filmstrip_html(images, "Venice Vintage Club")
-    # Replace the filmstrip-track contents in the community section
+    img_block = build_slideshow_html(images, "Venice Vintage Club")
     pattern = (
-        r'(<!-- Section 4: Community.*?<div class="filmstrip-track"[^>]*>)\s*\n'
+        r'(<div class="community-slideshow"[^>]*>)\s*\n'
         r'(.*?)'
-        r'(\s*</div>\s*</div>\s*<div class="community-carousel-overlay")'
+        r'(\s*<div class="community-carousel-overlay")'
     )
-    replacement = f"\\1\n{new_frames}\n\\3"
+    replacement = f"\\1\n{img_block}\n\\3"
     return re.sub(pattern, replacement, html, flags=re.DOTALL)
 
 
@@ -292,27 +289,16 @@ def update_html_space(html, images):
 
 
 def update_html_lookbook(html, images):
-    """Update the lookbook filmstrip."""
+    """Update the lookbook slideshow images."""
     if not images:
         return html
-    # Build Set A and Set B
-    frames_a = []
-    for img in images:
-        frames_a.append(
-            f'                <div class="filmstrip-frame">'
-            f'<img src="images/{img}" alt="Lookbook">'
-            f'</div>'
-        )
-    set_a = "\n".join(frames_a)
-    set_b = "\n".join(frames_a)  # duplicate for loop
-    new_filmstrip = f"                <!-- Set A -->\n{set_a}\n                <!-- Set B (duplicate for seamless loop) -->\n{set_b}"
-
+    img_block = build_slideshow_html(images, "Lookbook")
     pattern = (
-        r'(<!-- Section 6: Lookbook.*?<div class="filmstrip-track">)\s*\n'
+        r'(<div class="lookbook-slideshow"[^>]*>)\s*\n'
         r'(.*?)'
-        r'(\s*</div>\s*</div>\s*</section>\s*\n\s*<!-- Section 8:)'
+        r'(\s*<button class="slide-arrow)'
     )
-    replacement = f"\\1\n{new_filmstrip}\n\\3"
+    replacement = f"\\1\n{img_block}\n\\3"
     return re.sub(pattern, replacement, html, flags=re.DOTALL)
 
 
@@ -323,25 +309,6 @@ def update_html_event(html, images):
     pattern = r'(<div class="event-bg">\s*<img src="images/)[^"]+(")'
     replacement = f"\\g<1>{images[0]}\\2"
     return re.sub(pattern, replacement, html, flags=re.DOTALL)
-
-
-def update_html_drop(html, images):
-    """Update the drop product images (replace globe watermarks with actual photos)."""
-    if not images:
-        return html
-    # Replace each drop item's image, up to 4
-    for i, img in enumerate(images[:4]):
-        # Find the i-th drop-item and replace its image
-        pattern = r'(<div class="item-image">\s*)<img src="images/[^"]*"[^>]*>'
-        count = 0
-        def replacer(match):
-            nonlocal count
-            count += 1
-            if count == i + 1:
-                return f'{match.group(1)}<img src="images/{img}" alt="Product photo" class="product-photo">'
-            return match.group(0)
-        html = re.sub(pattern, replacer, html)
-    return html
 
 
 def update_html_morgan(html, images):
@@ -369,7 +336,6 @@ def update_index_html(section_images, replace_mode):
         "space": update_html_space,
         "lookbook": update_html_lookbook,
         "event": update_html_event,
-        "drop": update_html_drop,
         "morgan": update_html_morgan,
     }
 

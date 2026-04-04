@@ -1,20 +1,11 @@
 name: Sync Google Drive Photos
 
 on:
-  # Weekly on Monday at 9am PT (4pm UTC)
+  # Mon, Wed, Fri at 9am PT (4pm UTC)
   schedule:
-    - cron: '0 16 * * 1'
+    - cron: '0 16 * * 1,3,5'
   # Manual trigger from GitHub Actions tab
   workflow_dispatch:
-    inputs:
-      mode:
-        description: 'Sync mode'
-        required: true
-        default: 'add'
-        type: choice
-        options:
-          - add
-          - replace
 
 permissions:
   contents: write
@@ -42,12 +33,7 @@ jobs:
           sudo sed -i 's/<policy domain="coder" rights="none" pattern="HEIC"/<policy domain="coder" rights="read|write" pattern="HEIC"/' /etc/ImageMagick-6/policy.xml 2>/dev/null || true
 
       - name: Run sync script
-        run: |
-          MODE_FLAG="--replace"
-          if [ "${{ github.event.inputs.mode }}" = "add" ]; then
-            MODE_FLAG=""
-          fi
-          python3 sync-drive.py $MODE_FLAG
+        run: python3 sync-drive.py --replace
 
       - name: Commit and push changes
         run: |
