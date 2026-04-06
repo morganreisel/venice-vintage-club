@@ -1210,25 +1210,23 @@
         .community-slideshow {
             position: relative;
             width: 100%;
-            min-height: 50vh;
+            height: 75vh;
             overflow: hidden;
             background: transparent;
             z-index: 1;
         }
 
         .community-slideshow > img {
-            width: 100%;
-            height: auto;
-            display: block;
-            opacity: 0;
-            transition: opacity 1.2s ease;
-            filter: brightness(0.55) contrast(1.05) saturate(0.9);
-        }
-
-        .community-slideshow > img:not(.active) {
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+            filter: brightness(0.55) contrast(1.05) saturate(0.9);
         }
 
         .community-slideshow > img.active {
@@ -1283,6 +1281,9 @@
         }
 
         @media (max-width: 768px) {
+            .community-slideshow {
+                height: 50vh;
+            }
             .community-slideshow .slide-arrow {
                 width: 36px;
                 height: 36px;
@@ -1497,23 +1498,22 @@
         .lookbook-slideshow {
             position: relative;
             width: 100%;
+            height: 75vh;
             overflow: hidden;
             margin-top: 48px;
         }
 
         .lookbook-slideshow > img {
-            width: 100%;
-            height: auto;
-            display: block;
-            opacity: 0;
-            transition: opacity 1.2s ease;
-            filter: contrast(1.05) saturate(0.9);
-        }
-
-        .lookbook-slideshow > img:not(.active) {
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+            filter: contrast(1.05) saturate(0.9);
         }
 
         .lookbook-slideshow > img.active {
@@ -1548,6 +1548,9 @@
         .lookbook-slideshow .slide-arrow--right { right: 20px; }
 
         @media (max-width: 768px) {
+            .lookbook-slideshow {
+                height: 50vh;
+            }
             .lookbook-slideshow .slide-arrow {
                 width: 36px;
                 height: 36px;
@@ -1559,24 +1562,23 @@
         .mood-slideshow {
             position: relative;
             width: 100%;
+            height: 75vh;
             overflow: hidden;
             background: transparent;
             z-index: 1;
         }
 
         .mood-slideshow img {
-            width: 100%;
-            height: auto;
-            display: block;
-            opacity: 0;
-            transition: opacity 1.2s ease;
-            filter: contrast(1.08) saturate(0.85);
-        }
-
-        .mood-slideshow img:not(.active) {
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+            filter: contrast(1.08) saturate(0.85);
         }
 
         .mood-slideshow img.active {
@@ -1616,6 +1618,9 @@
         }
 
         @media (max-width: 768px) {
+            .mood-slideshow {
+                height: 50vh;
+            }
             .mood-slideshow .slide-arrow {
                 width: 36px;
                 height: 36px;
