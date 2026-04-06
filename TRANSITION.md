@@ -9,7 +9,7 @@ Everything you need to run venicevintageclub.com without Freddie.
 | What | Where |
 |------|-------|
 | **Live site** | [venicevintageclub.com](https://venicevintageclub.com) |
-| **GitHub repo** | [github.com/fmannion10/venice-vintage-club](https://github.com/fmannion10/venice-vintage-club) |
+| **GitHub repo** | [github.com/morganreisel/venice-vintage-club](https://github.com/morganreisel/venice-vintage-club) |
 | **Google Drive (photos)** | Shared folder: `VVC Media` (ID: `1RQYXWqeBc-NXHm_OqCLkf6MBkUJVUGAu`) |
 | **Domain** | `venicevintageclub.com` — managed by client (separate from GitHub) |
 | **Hosting** | GitHub Pages (free, auto-deploys) |
@@ -63,7 +63,7 @@ Every push to the `main` branch automatically deploys to GitHub Pages. There is 
 **No secrets or API keys needed.** It just works.
 
 ### How to check if a deploy succeeded
-1. Go to [github.com/fmannion10/venice-vintage-club/actions](https://github.com/fmannion10/venice-vintage-club/actions)
+1. Go to [github.com/morganreisel/venice-vintage-club/actions](https://github.com/morganreisel/venice-vintage-club/actions)
 2. Look for the most recent "Deploy" workflow run
 3. Green checkmark = live. Red X = something broke.
 
@@ -121,11 +121,36 @@ Photos are auto-named `{section}-01.jpg`, `{section}-02.jpg`, etc. You don't nee
 
 **Domain:** `venicevintageclub.com`
 **Hosting:** GitHub Pages (via the `CNAME` file in the repo)
+**DNS:** Cloudflare (proxies traffic to GitHub Pages)
 
-The domain registrar is managed by the client (not part of this repo). DNS must point to GitHub Pages:
+### After the GitHub repo transfer
+
+The repo moved from `morganreisel/venice-vintage-club` to `morganreisel/venice-vintage-club`. The Cloudflare DNS needs to be updated to match:
+
+1. Log in to Cloudflare at [dash.cloudflare.com](https://dash.cloudflare.com) (credentials in the VVC PRD doc)
+2. Select **venicevintageclub.com**
+3. Go to **DNS** > **Records**
+4. Find the CNAME record pointing to `fmannion10.github.io`
+5. Change it to `morganreisel.github.io`
+6. Save
+
+If this isn't done, the site will eventually go down when GitHub stops redirecting the old repo URL.
+
+### Transferring the Cloudflare account
+
+Once you have access to Cloudflare (login info is in the VVC PRD doc), you own the domain management. To fully take over the Cloudflare account:
+
+1. Log in to Cloudflare
+2. Go to **My Profile** (top right) > **Email Address**
+3. Change the email to your own (morgyreisel@gmail.com or the VVC email)
+4. Update the password to something only you know
+
+### DNS basics (in case you ever need them)
+
+The DNS must point to GitHub Pages:
 
 - If using an apex domain (`venicevintageclub.com`): Set A records to GitHub's IPs (found in [GitHub Pages docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-github-pages))
-- If using `www`: Set a CNAME record pointing to `fmannion10.github.io`
+- If using `www`: Set a CNAME record pointing to `morganreisel.github.io`
 
 **Do not delete the `CNAME` file** in the repo — it tells GitHub Pages which domain to serve.
 
@@ -230,7 +255,7 @@ These should also be backed up to Google Drive (in a `BRANDING/` folder).
 
 ## GitHub Repo Access
 
-The repo is at [github.com/fmannion10/venice-vintage-club](https://github.com/fmannion10/venice-vintage-club).
+The repo is at [github.com/morganreisel/venice-vintage-club](https://github.com/morganreisel/venice-vintage-club).
 
 To give someone else access:
 1. Go to **Settings → Collaborators** in the repo

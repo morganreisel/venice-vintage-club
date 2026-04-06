@@ -142,7 +142,7 @@ All login info for VVC accounts can be found in the Google Doc called **"VVC PRD
 |---|---|
 | **What it is** | The code repository and the system that automatically deploys the site |
 | **Login** | Go to [github.com](https://github.com) and sign in — credentials are in "VVC PRD" |
-| **Repository** | github.com/fmannion10/venice-vintage-club |
+| **Repository** | github.com/morganreisel/venice-vintage-club |
 | **When you need it** | Only to trigger a manual photo sync (Actions tab) or if a developer needs access to the code |
 
 **How to trigger a manual photo sync:**
