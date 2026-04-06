@@ -123,33 +123,50 @@ Photos are auto-named `{section}-01.jpg`, `{section}-02.jpg`, etc. You don't nee
 **Hosting:** GitHub Pages (via the `CNAME` file in the repo)
 **DNS:** Cloudflare (proxies traffic to GitHub Pages)
 
+### Moving the domain to your own Cloudflare account
+
+The VVC domain needs to move from Freddie's Cloudflare account to yours. This is a one-time setup that takes about 10 minutes. The site may be briefly unreachable while the nameservers update (usually under an hour, sometimes up to 24 hours).
+
+**Step 1 — Create your own Cloudflare account**
+1. Go to [dash.cloudflare.com](https://dash.cloudflare.com) and sign up with your email (morgyreisel@gmail.com or the VVC email)
+2. It's free — no payment needed
+
+**Step 2 — Add the VVC domain to your new account**
+1. Once logged in, click **"Add a site"**
+2. Enter `venicevintageclub.com`
+3. Choose the **Free** plan
+4. Cloudflare will scan your existing DNS records — let it finish
+5. You should see your existing records listed. If not, add these manually:
+   - **Type:** CNAME | **Name:** `@` | **Target:** `morganreisel.github.io` | **Proxy:** ON (orange cloud)
+   - **Type:** CNAME | **Name:** `www` | **Target:** `morganreisel.github.io` | **Proxy:** ON (orange cloud)
+6. Cloudflare will give you **two new nameservers** — write these down (they look like `anna.ns.cloudflare.com` and `bob.ns.cloudflare.com`)
+
+**Step 3 — Update nameservers at the domain registrar**
+1. Log in to wherever the domain was purchased (check the VVC PRD doc — this is the domain registrar, separate from Cloudflare)
+2. Find the **Nameservers** or **DNS** settings for `venicevintageclub.com`
+3. Replace the old nameservers with the two new ones Cloudflare gave you
+4. Save
+
+**Step 4 — Wait and verify**
+1. Cloudflare will show the domain as "Pending" until the nameservers update — this can take 10 minutes to 24 hours
+2. Once it switches to "Active", your Cloudflare account is in control
+3. Check that [venicevintageclub.com](https://venicevintageclub.com) loads correctly
+
+**Step 5 — Tell Freddie to remove the domain from his account**
+Once everything is working on your end, let Freddie know so he can delete `venicevintageclub.com` from his Cloudflare account.
+
 ### After the GitHub repo transfer
 
-The repo moved from `morganreisel/venice-vintage-club` to `morganreisel/venice-vintage-club`. The Cloudflare DNS needs to be updated to match:
+The GitHub repo moved from `fmannion10/venice-vintage-club` to `morganreisel/venice-vintage-club`. Make sure the Cloudflare DNS points to the right place:
 
-1. Log in to Cloudflare at [dash.cloudflare.com](https://dash.cloudflare.com) (credentials in the VVC PRD doc)
-2. Select **venicevintageclub.com**
-3. Go to **DNS** > **Records**
-4. Find the CNAME record pointing to `fmannion10.github.io`
-5. Change it to `morganreisel.github.io`
-6. Save
-
-If this isn't done, the site will eventually go down when GitHub stops redirecting the old repo URL.
-
-### Transferring the Cloudflare account
-
-Once you have access to Cloudflare (login info is in the VVC PRD doc), you own the domain management. To fully take over the Cloudflare account:
-
-1. Log in to Cloudflare
-2. Go to **My Profile** (top right) > **Email Address**
-3. Change the email to your own (morgyreisel@gmail.com or the VVC email)
-4. Update the password to something only you know
+- The CNAME record should point to `morganreisel.github.io` (NOT `fmannion10.github.io`)
+- If you set up the DNS records in Step 2 above, this is already correct
 
 ### DNS basics (in case you ever need them)
 
 The DNS must point to GitHub Pages:
 
-- If using an apex domain (`venicevintageclub.com`): Set A records to GitHub's IPs (found in [GitHub Pages docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-github-pages))
+- If using an apex domain (`venicevintageclub.com`): Set a CNAME to `morganreisel.github.io`, or A records to GitHub's IPs (found in [GitHub Pages docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-github-pages))
 - If using `www`: Set a CNAME record pointing to `morganreisel.github.io`
 
 **Do not delete the `CNAME` file** in the repo — it tells GitHub Pages which domain to serve.
