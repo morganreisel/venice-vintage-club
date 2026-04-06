@@ -43,7 +43,8 @@ venice-vintage-club/
 │   └── hero.jpg            ← Hero background
 ├── .github/workflows/
 │   ├── deploy.yml          ← Auto-deploy to GitHub Pages on push
-│   └── sync-drive.yml      ← Weekly Google Drive photo sync
+│   ├── sync-drive.yml      ← Google Drive photo sync (triggered by scheduler)
+│   └── scheduler.yml       ← Daily 9am PT trigger for the photo sync
 └── .drive-manifest.json    ← Tracks which Drive photos have been synced
 ```
 
@@ -68,17 +69,17 @@ Every push to the `main` branch automatically deploys to GitHub Pages. There is 
 
 ---
 
-## Google Drive Photo Sync (Auto — Weekly)
+## Google Drive Photo Sync (Auto — Daily)
 
-Photos upload to Google Drive, and the site pulls them in automatically every Monday.
+Photos upload to Google Drive, and the site pulls them in automatically every day.
 
-**Workflow:** `.github/workflows/sync-drive.yml`
+**Workflows:** `.github/workflows/scheduler.yml` (triggers the sync daily) + `.github/workflows/sync-drive.yml` (does the actual work)
 **Script:** `sync-drive.py`
 
 ### How it works
 
 1. Morgan (or anyone) drops photos into the **VVC Media** shared Google Drive folder
-2. Every **Monday at 9am PT**, GitHub Actions runs `sync-drive.py`
+2. Every day at **9am PT**, a scheduler workflow triggers `sync-drive.py` via GitHub Actions
 3. The script downloads all photos, converts them to optimized JPGs, and updates `index.html`
 4. Changes get committed and pushed — the site auto-deploys with the new photos
 
@@ -94,7 +95,6 @@ The Drive folder must have these subfolders. Drop photos into the right one:
 | `SPACE/` | "The Space" photo grid | As many as you want |
 | `LOOKBOOK/` | Lookbook filmstrip gallery | As many as you want |
 | `EVENT/` | Event section background | 1 photo |
-| `DROP/` | Product images in Morgan's Picks | Up to 4 |
 | `MORGAN/` | About section background (Morgan portrait) | 1 photo |
 
 ### Supported photo formats
@@ -176,10 +176,7 @@ To set it up:
 Search `index.html` for the current event info (e.g., "May 2") and update. The countdown timer auto-calculates from the date in the JavaScript near the bottom of the file.
 
 ### Add/change photos
-Drop them in the right folder in Google Drive. Wait for Monday's sync, or trigger a manual sync from the Actions tab.
-
-### Update product listings (Morgan's Picks)
-Search `index.html` for `drop-item` to find the product cards. Each card has an image, title, and details you can edit directly.
+Drop them in the right folder in Google Drive. Wait for the next daily sync (9am PT), or trigger a manual sync from the Actions tab.
 
 ### Change brand colors
 Search `index.html` for `:root` at the top of the `<style>` block. The CSS variables are:
@@ -212,7 +209,6 @@ These should also be backed up to Google Drive (in a `BRANDING/` folder).
 - [ ] Replace Mailchimp placeholders (see Mailchimp section above)
 - [ ] Set up `hello@venicevintageclub.com` via Google Workspace
 - [ ] Drop a real Morgan portrait into Drive `MORGAN/` folder
-- [ ] Add product photos to Drive `DROP/` folder
 - [ ] Swap hero placeholder for final garage photo (Drive `HERO/` folder)
 - [ ] Create Stripe payment links for products (or keep DM-to-purchase)
 - [ ] Upload branding assets to Drive `BRANDING/` folder
@@ -247,4 +243,4 @@ They'll need push access to `main` to make changes that auto-deploy.
 
 ---
 
-*Last updated: April 2, 2026*
+*Last updated: April 6, 2026*

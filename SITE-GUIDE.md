@@ -42,7 +42,7 @@ Each folder in Google Drive maps to a section of the website:
 
 ## When Photos Update
 
-Photos sync from Google Drive to the site automatically on **Monday, Wednesday, and Friday at 9am Pacific Time**.
+Photos sync from Google Drive to the site automatically **every day at 9am Pacific Time**.
 
 ### If You Need Photos Updated Right Now
 
@@ -107,7 +107,7 @@ That's it. Once the URL is in, both signup forms will send emails straight to yo
 2. Go to the subfolder for the section you want to change (e.g., MOOD/)
 3. Add, remove, or replace photos as needed
 4. **Remember: keep ALL the photos you want on the site in the folder — whatever's in the folder is what shows up**
-5. Wait for the next auto-sync (Mon/Wed/Fri 9am PT) or trigger a manual sync (see above)
+5. Wait for the next auto-sync (daily at 9am PT) or trigger a manual sync (see above)
 
 ### "I want to change text on the site"
 Text changes require editing the code (index.html). Ask Freddie or a developer to help.
@@ -186,7 +186,7 @@ If you're the new person managing VVC's website, here's exactly what to do:
 4. **Read this entire document** so you know what's what
 
 ### Ongoing (What You'll Actually Do)
-- **Swap photos:** Drag files in/out of Google Drive folders → site updates Mon/Wed/Fri automatically
+- **Swap photos:** Drag files in/out of Google Drive folders → site updates daily at 9am PT automatically
 - **Check email:** Log in to Gmail with the VVC account for any site-related inquiries
 - **Send newsletters:** Log in to Mailchimp (once set up) to email your subscriber list
 
