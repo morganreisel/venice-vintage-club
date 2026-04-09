@@ -1,7 +1,10 @@
 name: Sync Google Drive Photos
 
 on:
-  # Triggered daily by the scheduler workflow, or manually
+  # Every day at 9am PT (4pm UTC)
+  schedule:
+    - cron: '0 16 * * *'
+  # Can also be triggered manually from GitHub Actions UI
   workflow_dispatch:
 
 permissions:

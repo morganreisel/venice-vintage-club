@@ -174,11 +174,17 @@ def process_section(section_name, staging_path, replace_mode):
     ])
 
     if not image_files:
-        log(f"  Skipping {section_name} (no images)")
+        log(f"  {section_name}: no images in Drive")
+        # In replace mode, empty folder means remove all old images
+        if replace_mode:
+            for old_file in IMAGES_DIR.glob(f"{section}-[0-9][0-9].jpg"):
+                old_file.unlink()
+                log(f"  Removed old {old_file.name}")
         return []
 
     # Generate destination filenames: section-01.jpg, section-02.jpg, etc.
     new_images = []
+    seen_hashes = set()
     existing = []
 
     if not replace_mode:
@@ -186,15 +192,23 @@ def process_section(section_name, staging_path, replace_mode):
         existing = sorted(IMAGES_DIR.glob(f"{section}-[0-9][0-9].jpg"))
 
     start_num = len(existing) + 1 if not replace_mode else 1
+    num = start_num
 
-    for i, src_file in enumerate(image_files):
-        num = start_num + i
+    for src_file in image_files:
+        # Skip duplicate files (same content, different name in Drive)
+        src_hash = file_hash(src_file)
+        if src_hash in seen_hashes:
+            log(f"  Skipping duplicate {src_file.name}")
+            continue
+        seen_hashes.add(src_hash)
+
         dest_name = f"{section}-{num:02d}.jpg"
         dest_path = IMAGES_DIR / dest_name
 
         log(f"  Converting {src_file.name} → {dest_name}")
         if convert_and_optimize(src_file, dest_path, section):
             new_images.append(dest_name)
+            num += 1
         else:
             log(f"  !! Failed to convert {src_file.name}")
 
@@ -213,7 +227,7 @@ def update_html_hero(html, images):
     if not images:
         return html
     # Replace the background: url(...) in .hero-bg
-    old_pattern = r"(background:\s*url\('images/)[^']+('\)\s*center/cover)"
+    old_pattern = r"(background:\s*url\('images/)[^']+('\)\s*center[^;]*)"
     new_ref = f"\\g<1>{images[0]}\\2"
     return re.sub(old_pattern, new_ref, html)
 
@@ -382,9 +396,8 @@ def main():
         section = section_name.lower()
         log(f"\nProcessing {section_name}...")
         images = process_section(section_name, STAGING_DIR, replace_mode)
-        if images:
-            section_images[section] = images
-            log(f"  → {len(images)} images ready")
+        section_images[section] = images
+        log(f"  → {len(images)} images ready")
 
     # Step 3: Update HTML
     if section_images:
