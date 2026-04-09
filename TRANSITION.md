@@ -43,8 +43,7 @@ venice-vintage-club/
 │   └── hero.jpg            ← Hero background
 ├── .github/workflows/
 │   ├── deploy.yml          ← Auto-deploy to GitHub Pages on push
-│   ├── sync-drive.yml      ← Google Drive photo sync (triggered by scheduler)
-│   └── scheduler.yml       ← Daily 9am PT trigger for the photo sync
+│   └── sync-drive.yml      ← Google Drive photo sync (daily 9am PT + manual trigger)
 └── .drive-manifest.json    ← Tracks which Drive photos have been synced
 ```
 
@@ -73,15 +72,17 @@ Every push to the `main` branch automatically deploys to GitHub Pages. There is 
 
 Photos upload to Google Drive, and the site pulls them in automatically every day.
 
-**Workflows:** `.github/workflows/scheduler.yml` (triggers the sync daily) + `.github/workflows/sync-drive.yml` (does the actual work)
+**Workflow:** `.github/workflows/sync-drive.yml` (runs daily + manual trigger)
 **Script:** `sync-drive.py`
 
 ### How it works
 
 1. Morgan (or anyone) drops photos into the **VVC Media** shared Google Drive folder
-2. Every day at **9am PT**, a scheduler workflow triggers `sync-drive.py` via GitHub Actions
-3. The script downloads all photos, converts them to optimized JPGs, and updates `index.html`
+2. Every day at **9am PT**, `sync-drive.yml` runs automatically via GitHub Actions cron
+3. The script downloads all photos, converts them to optimized JPGs, deduplicates identical files, and updates `index.html`
 4. Changes get committed and pushed — the site auto-deploys with the new photos
+
+**Note:** If a Drive folder is emptied, the corresponding images are removed from the site. Duplicate files (same content, different names) are automatically skipped so photos don't appear twice.
 
 ### Drive Folder Structure
 
@@ -288,4 +289,4 @@ They'll need push access to `main` to make changes that auto-deploy.
 
 ---
 
-*Last updated: April 6, 2026*
+*Last updated: April 9, 2026*
